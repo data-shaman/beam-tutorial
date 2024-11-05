@@ -12,8 +12,8 @@ class BeamPipeline:
    
     def run(self):
         with beam.Pipeline(options=self.pipeline_options) as p:
-            (p
+            (p  # pylint: disable=expression-not-assigned
              | 'ReadCSV' >> beam.io.ReadFromText(self.input_path, skip_header_lines=1)
              | 'ProcessData' >> beam.ParDo(ProcessData())
              | 'WriteOutput' >> beam.io.WriteToText(self.output_path)
-            )  # pylint: disable=expression-not-assigned
+            )

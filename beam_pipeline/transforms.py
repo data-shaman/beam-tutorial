@@ -1,10 +1,10 @@
-from io import StringIO
-import apache_beam as beam
+from io import StringIO  # pylint: disable=missing-module-docstring
 import csv
+import apache_beam as beam
 
 
-class ProcessData(beam.DoFn):
-    def process(self, element):
+class ProcessData(beam.DoFn):  # pylint: disable=abstract-method # pylint: disable=missing-class-docstring
+    def process(self, element):  # pylint: disable=arguments-differ
         reader = csv.DictReader(StringIO(element), fieldnames=[
             'current_location', 
             'website', 

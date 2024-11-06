@@ -3,14 +3,14 @@ from apache_beam.options.pipeline_options import PipelineOptions
 from beam_pipeline.transforms import ProcessData
 
 
-class BeamPipeline:
+class BeamPipeline:  # pylint: disable=missing-class-docstring
     def __init__(self, input_path, output_path):
         self.input_path = input_path
         self.output_path = output_path
         self.pipeline_options = PipelineOptions()
 
    
-    def run(self):
+    def run(self):  # pylint: disable=missing-function-docstring
         with beam.Pipeline(options=self.pipeline_options) as p:
             (p  # pylint: disable=expression-not-assigned
              | 'ReadCSV' >> beam.io.ReadFromText(self.input_path, skip_header_lines=1)

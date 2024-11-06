@@ -1,2 +1,2 @@
 apache-beam
-faker
+fake_web_events

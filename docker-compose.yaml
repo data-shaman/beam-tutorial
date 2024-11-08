@@ -1,0 +1,32 @@
+version: '3'
+services:
+  data_generator:
+    image: python:3.11
+    container_name: data_generator
+    volumes:
+      - shared_data:/data
+      - ./scripts/generate_data.py:/docker-entrypoint-initdb.d/generate_data.py
+    command: ["bash", "-c", "pip install fake_web_events psycopg2 && python /docker-entrypoint-initdb.d/generate_data.py"]                                              # Path to your generator script
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:latest                                                          # Pull the latest PostgreSQL image
+    container_name: postgres_container
+    environment:
+      POSTGRES_HOST: postgres_db
+      POSTGRES_DB: website_events                                                   # Name of the database to create
+      POSTGRES_USER: postgres                                                           # Set username
+      POSTGRES_PASSWORD: Passw0rd                                                   # Set password
+    ports:
+      - "5432:5432"                                                                 # Expose port 5432 to host
+    volumes:
+      - pgdata:/var/lib/postgresql/data                                             # Persist data with a Docker volume
+      - ./create_table.sql:/docker-entrypoint-initdb.d/create_table.sql             # Mount and run SQL script on startup. This will create table inside the DB.        
+      - shared_data:/data
+
+volumes:
+  pgdata:
+    driver: local                                                                   # Use local driver for persistence
+  shared_data:
+    driver: local

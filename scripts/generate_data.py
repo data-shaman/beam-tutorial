@@ -51,12 +51,14 @@ avro_schema = {
 }
 
 # Initialise the simulation
-simulation = Simulation(user_pool_size=100, sessions_per_day=1000)
-event = next(simulation.run(duration_seconds=60))
+simulation = Simulation(user_pool_size=1000, sessions_per_day=100)
 
 # Write to Avro file
+print("Writing events to Avro...")
 with open("web_events.avro", "wb") as out_file:
-    fastavro.writer(out_file, avro_schema, [event])
+    writer = fastavro.writer(out_file, avro_schema, simulation.run(duration_seconds=60))
+
+print("Avro file created")
 
 # Connect to the PostgreSQL database
 connection = psycopg2.connect(
@@ -111,7 +113,7 @@ with open("web_events.avro", "rb") as avro_file:
         # Replace None values with NULL and convert to appropriate types
         values = [value if value is not None else None for value in values]
 
-        insert_query = sql.SQL("INSERT into {table} ({fields}) VALUES ({placeholsers})").format(
+        insert_query = sql.SQL("INSERT into {table} ({fields}) VALUES ({placeholders})").format(
             table=sql.Identifier(table_name),
             fields=sql.SQL(', ').join(map(sql.Identifier, columns)),
             placeholders=sql.SQL(', ').join(sql.Placeholder() * len(values))

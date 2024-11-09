@@ -6,7 +6,7 @@ services:
     volumes:
       - shared_data:/data
       - ./scripts/generate_data.py:/docker-entrypoint-initdb.d/generate_data.py
-    command: ["bash", "-c", "pip install fake_web_events psycopg2 && python /docker-entrypoint-initdb.d/generate_data.py"]                                              # Path to your generator script
+    command: ["bash", "-c", "pip install fastavro fake_web_events psycopg2 && python /docker-entrypoint-initdb.d/generate_data.py"]                                              # Path to your generator script
     depends_on:
       - postgres_db
 

@@ -142,7 +142,11 @@ def write_to_duckdb(record):
 
 
 def run_pipeline():
+    """
+    Ensure your PipelineOptions explicitly specify the DirectRunner
+    """
     options = PipelineOptions()
+    options.view_as(beam.options.pipeline_options.StandardOptions).runner = 'DirectRunner'
 
     with beam.Pipeline(options=options) as p:
         # Stream data from PostgreSQL

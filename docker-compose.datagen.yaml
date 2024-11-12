@@ -1,4 +1,3 @@
-version: '3'
 services:
   data_generator:
     image: python:3.11
@@ -28,6 +27,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data                       # Persist data with a Docker volume       
       - shared_data:/data
+    
 
 volumes:
   pgdata:

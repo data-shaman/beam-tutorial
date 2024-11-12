@@ -5,12 +5,12 @@ services:
     container_name: data_generator
     volumes:
       - shared_data:/data
-      - ./scripts/generate_data.py:/docker-entrypoint-initdb.d/generate_data.py
-    command: ["bash", "-c", "pip install fastavro fake_web_events psycopg2 && python /docker-entrypoint-initdb.d/generate_data.py"]        # Path to your generator script
+      - ./scripts/generate_data.py:/docker-entrypoint-initdb.d/generate_data.py                     # Path to your generator script
+    command: ["bash", "-c", "pip install fastavro fake_web_events psycopg2 && python /docker-entrypoint-initdb.d/generate_data.py"]
     environment:
       POSTGRES_HOST: postgres_db
       POSTGRES_DB: website_events
-      POSTGRES_USER: postgres                                 
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Passw0rd
     depends_on:
       - postgres_db
